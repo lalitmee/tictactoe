@@ -24,7 +24,9 @@ const Board = () => {
     setSquares(nextSquares);
   };
 
-  const playAgain = () => {};
+  const playAgain = () => {
+    setSquares(Array(9).fill(null));
+  };
 
   const renderSquare = i => {
     return (
@@ -38,20 +40,20 @@ const Board = () => {
   };
 
   const winner = calculateWinner(squares);
-  let status;
-  if (winner) {
-    status = 'Winner: ' + winner;
-  } else {
-    status = 'Next player: ' + (isXNext ? 'X' : 'O');
-  }
 
   return (
     <div>
       <div className="status">
-        {status}
-        <button className="refres" onClick={() => playAgain()}>
-          Play Again
-        </button>
+        {winner ? (
+          <div>
+            Winner: <span className="winner">{winner}</span>
+          </div>
+        ) : (
+          <div>
+            Next player:{' '}
+            <span className="next-player">{isXNext ? 'X' : 'O'}</span>
+          </div>
+        )}
       </div>
       <div className="board-row">
         {renderSquare(0)}
@@ -68,6 +70,10 @@ const Board = () => {
         {renderSquare(7)}
         {renderSquare(8)}
       </div>
+
+      <button className="play-again" onClick={() => playAgain()}>
+        Play Again
+      </button>
     </div>
   );
 };
@@ -95,7 +101,7 @@ function calculateWinner(squares) {
     [1, 4, 7],
     [2, 5, 8],
     [0, 4, 8],
-    [2, 4, 6]
+    [2, 4, 6],
   ];
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
